@@ -18,3 +18,18 @@ jobs:
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"
+  code_server_job:
+    runs-on: ubuntu-latest
+    name: Run a code-server in Docker container
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Create and run Docker container
+        run: docker-compose up -d
+      - name: Sleep
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '60s'
+      - name: Check running containers
+        run: docker ps -a
+      # TODO: Next we can run a test with the container
